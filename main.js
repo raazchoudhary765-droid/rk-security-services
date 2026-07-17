@@ -160,23 +160,72 @@ if(gfilterBtns.length){
   });
 }
 
-/* simple lightbox for gallery tiles */
-const lightbox = document.getElementById('lightbox');
+/* ==========================
+   PREMIUM GALLERY LIGHTBOX
+========================== */
+
+const lightbox = document.getElementById("lightbox");
+
 if(lightbox){
-  const lbTitle = lightbox.querySelector('h4');
-  const lbDesc = lightbox.querySelector('p');
-  document.querySelectorAll('.gallery-grid [data-cat], .gallery-grid div').forEach(tile => {
-    tile.addEventListener('click', () => {
-      const caption = tile.querySelector('.g-caption, span');
-      if(lbTitle) lbTitle.textContent = caption ? caption.textContent : 'Gallery Image';
-      if(lbDesc) lbDesc.textContent = 'Full-resolution photography will be added here by RK Security Services.';
-      lightbox.classList.add('open');
-    });
-  });
-  const lbClose = lightbox.querySelector('.lb-close');
-  if(lbClose) lbClose.addEventListener('click', () => lightbox.classList.remove('open'));
-  lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.classList.remove('open'); });
-  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') lightbox.classList.remove('open'); });
+
+const lbBox = lightbox.querySelector(".lb-box");
+
+lbBox.innerHTML = `
+<button class="lb-close">&times;</button>
+
+<img id="lbImage" src="" alt="">
+
+<h4 id="lbTitle"></h4>
+
+`;
+
+const lbImage = document.getElementById("lbImage");
+const lbTitle = document.getElementById("lbTitle");
+
+document.querySelectorAll(".gallery-item").forEach(item=>{
+
+item.addEventListener("click",()=>{
+
+const img=item.querySelector("img");
+
+const caption=item.querySelector(".g-caption");
+
+lbImage.src=img.src;
+
+lbTitle.textContent=caption.textContent;
+
+lightbox.classList.add("open");
+
+});
+
+});
+
+lightbox.querySelector(".lb-close").onclick=function(){
+
+lightbox.classList.remove("open");
+
+}
+
+lightbox.onclick=function(e){
+
+if(e.target===lightbox){
+
+lightbox.classList.remove("open");
+
+}
+
+}
+
+document.addEventListener("keydown",function(e){
+
+if(e.key==="Escape"){
+
+lightbox.classList.remove("open");
+
+}
+
+});
+
 }
 
 /* client logo marquee — duplicate track for seamless loop */
